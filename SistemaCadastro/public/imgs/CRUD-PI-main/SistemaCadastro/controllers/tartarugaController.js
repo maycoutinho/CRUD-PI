@@ -5,7 +5,7 @@ const TartarugaController = {
     const tartarugas = await Tartaruga.findAll({
       order: [['id', 'DESC']]
     })
-    res.render('index', { tartarugas, pagina: 'dashboard' })
+    res.render('index', { tartarugas })
   },
 
   cadastro(req, res) {

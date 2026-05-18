@@ -27,6 +27,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 app.set('view engine', 'ejs')
 
+// Middleware para impedir que acessem o sistema sem fazer login
 function verificarAutenticacao(req, res, next) {
   if (req.session && req.session.usuario) {
     return next()
@@ -45,16 +46,17 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage })
 
-app.get('/home', verificarAutenticacao, (req, res) => {
-    res.render('home', { pagina: 'home' });
-})
+
+
 
 app.get('/', authController.loginPage)
 app.post('/login', authController.login)
 
+// Cadastro de usuário
 app.get('/cadastro-usuario', authController.cadastroPage)
 app.post('/cadastro-usuario', authController.cadastrar)
 
+// Painel de Tartarugas (Protegido por login)
 app.get('/dashboard', verificarAutenticacao, TartarugaController.listar)
 app.get('/cadastro', verificarAutenticacao, TartarugaController.cadastro)
 app.post('/salvar', verificarAutenticacao, upload.single('imagem'), TartarugaController.salvar)
@@ -70,10 +72,10 @@ async function criarBanco() {
       password: ''
     })
     await connection.query(`CREATE DATABASE IF NOT EXISTS SistemaCadastroTartaruga`)
-    console.log('Banco criado ou já existente')
+    console.log('📦 Banco criado ou já existente')
     await connection.end()
   } catch (err) {
-    console.log('Erro ao criar banco de dados:', err.message)
+    console.log('❌ Erro ao criar banco de dados:', err.message)
   }
 }
 
@@ -82,9 +84,9 @@ await criarBanco()
 sequelize.sync()
   .then(() => {
     app.listen(8080, () => {
-      console.log('Servidor rodando em http://localhost:8080')
+      console.log('🚀 Servidor rodando em http://localhost:8080')
     })
   })
   .catch(err => {
-    console.log('Erro na sincronização do Sequelize:', err)
+    console.log('❌ Erro na sincronização do Sequelize:', err)
   })

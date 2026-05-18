@@ -24,7 +24,7 @@ const authController = {
     }
 
     req.session.usuario = usuario.id
-    res.redirect('/home') 
+    res.redirect('/dashboard') 
   },
 
   cadastroPage(req, res) {
