@@ -6,7 +6,7 @@ import { fileURLToPath } from 'url'
 import session from 'express-session'
 
 import sequelize from './models/database.js'
-import TartarugaController from './controllers/TartarugaController.js'
+import TartarugaController from './controllers/tartarugaController.js'
 import authController from './controllers/authController.js'
 
 const app = express()
